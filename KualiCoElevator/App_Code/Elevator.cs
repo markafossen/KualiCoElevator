@@ -30,7 +30,7 @@ namespace KualiCoElevator
         private int m_iMinFLoor = 1; //specified in spec
         private int m_iMaxFloor = 10; //default value
         private int m_iCurrentFloor = 1;//start on ground floor
-        private int[] m_aDestinationFloors; //no destinations
+        private List<int> m_DestinationFloors; //no destinations
         private bool m_bIsEmpty = true;//assume empty
         private DoorStates m_CurrentDoorState = DoorStates.Closed;
         private Direction m_CurrentDirection = Direction.Stopped;
@@ -49,10 +49,11 @@ namespace KualiCoElevator
         {
             get
             {
-                //if it has a destination, it needs to be moving towards that destination
-                bool bRet = false;
-                if ((m_aDestinationFloors == null || m_aDestinationFloors.Length == 0)) bRet = true; //helper prop, looks at Destination floors. If none, is empty
+                //for convience. just look at the enum. if not stopped, it's moving
+                bool bRet = true;
+                if (m_CurrentDirection == Direction.Stopped) bRet = false;
                 return bRet;
+
             }
         }
         public int MinFLoor
@@ -94,16 +95,16 @@ namespace KualiCoElevator
             }
         }
 
-        public int[] DestinationFloors
+        public List<int> DestinationFloors
         {
             get
             {
-                return m_aDestinationFloors;
+                return m_DestinationFloors;
             }
 
             set
             {
-                m_aDestinationFloors = value;
+                m_DestinationFloors = value;
             }
         }
 
@@ -205,7 +206,7 @@ namespace KualiCoElevator
         #region Public Functions
         public void SetDestination(int Floor)
         {
-
+            m_DestinationFloors.Add(Floor);
         }
         #endregion
 
@@ -213,9 +214,37 @@ namespace KualiCoElevator
         private void Move()
         {
             //How long does it take to move from floor to floor?
-            //What is our next Destination, Wat is our Direction
-            //track floors passed
+            //Do We Have a destination? If not don't move, and be stopped.
+            if ((m_DestinationFloors == null || m_DestinationFloors.Count == 0))
+            {
+                m_CurrentDirection = Direction.Stopped;
+            }
+            else //if we do have a destination
+            {
+                //What is our Direction
 
+                //What is our next Destination,
+
+            }
+
+
+            ///The elevator should keep track of how many trips it has made, 
+            ///and how many floors it has passed. The elevator should go into 
+            ///maintenance mode after 100 trips, and stop functioning until serviced, 
+            ///therefore not be available for elevator calls.
+
+            //track trips, send into maintenance when empty and stopped(?) and currently operational
+            //still need to define trips as opposed to floors.
+                if (m_iTotalTrips >= 100)
+            {
+                if ((m_bIsEmpty) && (m_CurrentDirection == Direction.Stopped) && (m_CurrentMode == Mode.Operational)
+                {
+                    m_CurrentDoorState = DoorStates.Closed; //close the doors
+                    m_CurrentMode = Mode.Maintenance;//put it in maintenance
+                    m_DestinationFloors.Add(1);
+
+                }
+            }
 
         }
         #endregion
