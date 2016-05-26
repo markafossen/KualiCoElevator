@@ -13,6 +13,17 @@ namespace KualiCoElevator
             Open,
             Closed
         }
+        public enum Direction
+        {
+            Up,
+            Down,
+            Stopped
+        }
+        public enum Mode //not a boolean, just in acse there are other states I have not thought of ... like Executive/Express?
+        {
+            Maintenance,
+            Operational
+        }
         #endregion
 
         #region Private Properties
@@ -20,7 +31,10 @@ namespace KualiCoElevator
         private int m_iMaxFloor = 10; //default value
         private int m_iCurrentFloor = 1;//start on ground floor
         private int[] m_aDestinationFloors; //no destinations
+        private bool m_bIsEmpty = true;//assume empty
         private DoorStates m_CurrentDoorState = DoorStates.Closed;
+        private Direction m_CurrentDirection = Direction.Stopped;
+        private Mode m_CurrentMode = Mode.Operational;
 
         private int m_iTotalTrips = 0;//brand-new
         private int m_iTotalFloors = 0;//brand-new
@@ -29,16 +43,18 @@ namespace KualiCoElevator
 
         #region Public Properties
 
-        public bool isEmpty
+
+
+        public bool isMoving
         {
-            get 
+            get
             {
+                //if it has a destination, it needs to be moving towards that destination
                 bool bRet = false;
                 if ((m_aDestinationFloors == null || m_aDestinationFloors.Length == 0)) bRet = true; //helper prop, looks at Destination floors. If none, is empty
                 return bRet;
             }
         }
-
         public int MinFLoor
         {
             get
@@ -91,6 +107,23 @@ namespace KualiCoElevator
             }
         }
 
+        public bool IsEmpty
+        {
+            //was calculating this, but needs to be tracked
+            //when there are no destinations and the door has closed it is empty. 
+            //It is still empty until it has recieved a destination AND opened its doors
+            get
+
+            {
+                return m_bIsEmpty;
+            }
+
+            set
+            {
+                m_bIsEmpty = value;
+            }
+        }
+
         public DoorStates CurrentDoorState
         {
             get
@@ -101,6 +134,32 @@ namespace KualiCoElevator
             set
             {
                 m_CurrentDoorState = value;
+            }
+        }
+
+        public Direction CurrentDirection
+        {
+            get
+            {
+                return m_CurrentDirection;
+            }
+
+            set
+            {
+                m_CurrentDirection = value;
+            }
+        }
+
+        public Mode CurrentMode
+        {
+            get
+            {
+                return m_CurrentMode;
+            }
+
+            set
+            {
+                m_CurrentMode = value;
             }
         }
 
@@ -129,6 +188,7 @@ namespace KualiCoElevator
                 m_iTotalFloors = value;
             }
         }
+
         #endregion
 
         #region Constructors
@@ -139,6 +199,24 @@ namespace KualiCoElevator
         public Elevator(int MaxFloor)
         {
             m_iMaxFloor = MaxFloor;
+        }
+        #endregion
+
+        #region Public Functions
+        public void SetDestination(int Floor)
+        {
+
+        }
+        #endregion
+
+        #region Private Functions
+        private void Move()
+        {
+            //How long does it take to move from floor to floor?
+            //What is our next Destination, Wat is our Direction
+            //track floors passed
+
+
         }
         #endregion
     }
