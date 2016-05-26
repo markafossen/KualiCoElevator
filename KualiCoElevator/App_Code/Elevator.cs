@@ -39,7 +39,7 @@ namespace KualiCoElevator
             }
         }
 
-        public int IMinFLoor
+        public int MinFLoor
         {
             get
             {
@@ -52,7 +52,7 @@ namespace KualiCoElevator
             }
         }
 
-        public int IMaxFloor
+        public int MaxFloor
         {
             get
             {
@@ -65,7 +65,7 @@ namespace KualiCoElevator
             }
         }
 
-        public int ICurrentFloor
+        public int CurrentFloor
         {
             get
             {
@@ -78,7 +78,7 @@ namespace KualiCoElevator
             }
         }
 
-        public int[] ADestinationFloors
+        public int[] DestinationFloors
         {
             get
             {
@@ -104,7 +104,7 @@ namespace KualiCoElevator
             }
         }
 
-        public int ITotalTrips
+        public int TotalTrips
         {
             get
             {
@@ -117,7 +117,7 @@ namespace KualiCoElevator
             }
         }
 
-        public int ITotalFloors
+        public int TotalFloors
         {
             get
             {
@@ -131,6 +131,15 @@ namespace KualiCoElevator
         }
         #endregion
 
+        #region Constructors
+        public Elevator()
+        {
+        }
 
+        public Elevator(int MaxFloor)
+        {
+            m_iMaxFloor = MaxFloor;
+        }
+        #endregion
     }
 }
