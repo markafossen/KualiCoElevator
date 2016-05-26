@@ -56,6 +56,16 @@ namespace KualiCoElevator
 
             }
         }
+
+        public int NextFloor
+        {
+            get
+            {
+                //let controller know where we're headed. if stopped with no destination that's the current floor
+                return m_iCurrentFloor;
+
+            }
+        }
         public int MinFLoor
         {
             get
@@ -208,6 +218,16 @@ namespace KualiCoElevator
         {
             m_DestinationFloors.Add(Floor);
         }
+
+        public void DoMaintenance()
+        {
+            //public, will need to be checked by outside entity
+            //Q - Will we need a historical count?
+            m_iTotalFloors = 0; //reset counter
+            m_iTotalTrips = 0; //reset counter
+            m_CurrentMode = Mode.Operational;//put back in service
+        }  
+                    
         #endregion
 
         #region Private Functions
@@ -227,25 +247,29 @@ namespace KualiCoElevator
 
             }
 
+            CheckMaintenance();
 
+        }
+
+        private void CheckMaintenance()
+        {
             ///The elevator should keep track of how many trips it has made, 
             ///and how many floors it has passed. The elevator should go into 
             ///maintenance mode after 100 trips, and stop functioning until serviced, 
             ///therefore not be available for elevator calls.
 
             //track trips, send into maintenance when empty and stopped(?) and currently operational
-            //still need to define trips as opposed to floors.
-                if (m_iTotalTrips >= 100)
+            //Q- still need to define trips as opposed to floors.
+            if (m_iTotalTrips >= 100)
             {
-                if ((m_bIsEmpty) && (m_CurrentDirection == Direction.Stopped) && (m_CurrentMode == Mode.Operational)
+                if ((m_bIsEmpty) && (m_CurrentDirection == Direction.Stopped) && (m_CurrentMode == Mode.Operational))
                 {
                     m_CurrentDoorState = DoorStates.Closed; //close the doors
                     m_CurrentMode = Mode.Maintenance;//put it in maintenance
-                    m_DestinationFloors.Add(1);
+                    m_DestinationFloors.Add(1);//send to ground floor
 
                 }
             }
-
         }
         #endregion
     }
