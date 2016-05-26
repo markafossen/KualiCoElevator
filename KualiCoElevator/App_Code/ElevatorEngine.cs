@@ -50,25 +50,39 @@ namespace KualiCoElevator
             {
                 //only check in-service elevators
                 if (e.CurrentMode == Elevator.Mode.Operational)
-                { 
-                //is an empty elevator stopped at that floor
-                //Q -- Does it matter if it's empty, really?
-                if ((e.IsEmpty) && (e.CurrentFloor == WhichFloor))
+                {
+                    //is an empty elevator stopped at that floor
+                    //Q -- Does it matter if it's empty, really? Can't we open a full elevator?
+                    if ((e.IsEmpty) && (e.CurrentFloor == WhichFloor))
                     {
-                        e.SetDestination(WhichFloor);
                         calledElevator = e;
                     }
-                    //is a moving elevator going to pass? (Moving up to higher floor, or down to lower
+                    //is a moving elevator going to pass? (Moving up to higher floor, or down to lower)
+                    //TODO - This does not guarantee the closest moving
                     else if (((e.CurrentDirection == Elevator.Direction.Up) && (e.NextFloor >= WhichFloor)) || ((e.CurrentDirection == Elevator.Direction.Down) && (e.NextFloor <= WhichFloor)))
                     {
-                        e.SetDestination(WhichFloor);
                         calledElevator = e;
                     }
-                }
+                 }
             }
-            //Return the elevator called
 
+            if (calledElevator == null)
+            {
+                calledElevator = getClosestUnoccupiedElevator();
+            }
+
+
+            //set the destination
+            calledElevator.SetDestination(WhichFloor);
+
+            //Return the elevator called
             return calledElevator;
+        }
+
+        private Elevator getClosestUnoccupiedElevator()
+        {
+            //TODO -- loop through unoccupied and find closest
+            throw new NotImplementedException();
         }
         #endregion
 
